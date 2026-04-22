@@ -25,7 +25,11 @@ class StartPomodoro:
         if mode == 'f':
             max_mins = int(input("Enter max minutes for this flowmodoro: "))
             start_time = datetime.datetime.now().replace(microsecond=0)
-            timer.run_flowmodoro(max_mins)
+            try:
+                timer.run_flowmodoro(max_mins)
+            except SystemExit as e:
+                print(e)
+                return
             end_time = datetime.datetime.now().replace(microsecond=0)
             write_to_csv(task_name, {
                 'duration': max_mins, 

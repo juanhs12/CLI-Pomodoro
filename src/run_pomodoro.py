@@ -29,19 +29,25 @@ class Timer:
             except KeyboardInterrupt:
                 print(f"\nFluxo pausado aos {work_done_in_block // 60}m {work_done_in_block % 60}s.")
                 total_work_done += work_done_in_block
-                self._do_break(work_done_in_block)
+                if not self._do_break(work_done_in_block):
+                    raise SystemExit("\nSaindo sem salvar.")
                 if total_work_done < total_goal_seconds:
                     print(f"\nRetomando fluxo. Total trabalhado: {total_work_done // 60}m {total_work_done % 60}s / {max_minutes}m.")
 
     def _do_break(self, work_done_seconds):
         break_time = int(work_done_seconds * 0.20)
-        print(f"\nIniciando pausa de {break_time // 60}m {break_time % 60}s.")
+        print(f"\nIniciando pausa de {break_time // 60}m {break_time % 60}s. (Ctrl+C para cancelar e sair)")
         chime.theme('zelda')
         chime.success()
-        self.countdown(break_time)
-        print("\nPausa finalizada.")
-        chime.theme('sonic')
-        chime.success()
+        try:
+            self.countdown(break_time)
+            print("\nPausa finalizada.")
+            chime.theme('sonic')
+            chime.success()
+            return True
+        except KeyboardInterrupt:
+            print("\nPausa cancelada.")
+            return False
 
     def run_pomodoro(self, cycle_length, work_time, short_break, long_break):
         for i in range(cycle_length):
@@ -62,12 +68,8 @@ class Timer:
         self.countdown(long_break * 60)
 
     def countdown(self, t):
-        try:
-            while t:
-                mins, secs = divmod(t, 60)
-                # Sintaxe corrigida para evitar erro de f-string
-                print("\r{:02d}:{:02d}".format(mins, secs), end="", flush=True)
-                time.sleep(1)
-                t -= 1
-        except KeyboardInterrupt:
-            print("\nCronômetro interrompido.")
+        while t:
+            mins, secs = divmod(t, 60)
+            print("\r{:02d}:{:02d}".format(mins, secs), end="", flush=True)
+            time.sleep(1)
+            t -= 1
