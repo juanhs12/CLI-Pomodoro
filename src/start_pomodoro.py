@@ -13,13 +13,29 @@ class StartPomodoro:
         pomodoro_instance = Pomodoro()
         timer = Timer()
 
+        mode = input('Choose mode: [p]omodoro or [f]lowmodoro: ').lower()
+        
+        while True:
+            task_name = input('Enter the name of the task this session is for: ')
+            if task_name:
+                break
+            else:
+                print("You must enter a task name. Please try again.")
+
+        if mode == 'f':
+            max_mins = int(input("Enter max minutes for this flowmodoro: "))
+            start_time = datetime.datetime.now().replace(microsecond=0)
+            timer.run_flowmodoro(max_mins)
+            end_time = datetime.datetime.now().replace(microsecond=0)
+            write_to_csv(task_name, {
+                'duration': max_mins, 
+                'task': task_name, 
+                'start_time': start_time, 
+                'end_time': end_time
+            })
+            return
+
         try:
-            while True:
-                task_name = input('Enter the name of the task this pomodoro is for: ')
-                if task_name:
-                    break
-                else:
-                    print("You must enter a task name. Please try again.")
             cycle_length, work_time, short_break, long_break = pomodoro_instance.user_preferences()  
 
             pomodoro = {
@@ -30,7 +46,6 @@ class StartPomodoro:
             }
             self.pomodoros.append(pomodoro)
 
-            # if the task already exists append pomodoro to task
             task_exists = False
             for task in self.tasks:
                 if task['name'] == task_name:
@@ -50,7 +65,5 @@ class StartPomodoro:
             timer.run_pomodoro(cycle_length, work_time, short_break, long_break)
 
         except KeyboardInterrupt:
-            print("\nInterrupted. Writing current pomodoro to file...")
-            write_to_csv(task_name, pomodoro)
-
-
+            print("\nInterrupted. Writing current session to file...")
+            write_to_csv(task_name, {'duration': 0, 'task': task_name, 'start_time': 'N/A', 'end_time': 'N/A'})

@@ -17,6 +17,7 @@ python3 -m venv venv
 source venv/bin/activate
 
 # Installing dependencies
+# comentei pq tava dando erro, mas é esse chime nos requerimentos que da o aviso sonoro
 pip install -r requirements.txt
 
 # Run application
