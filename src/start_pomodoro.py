@@ -2,6 +2,7 @@ from pomodoro_length import Pomodoro
 import datetime
 from run_pomodoro import Timer
 from write_to_csv import write_to_csv
+from analyze_tasks import analyze_task_percentages
 
 class StartPomodoro:
 
@@ -13,7 +14,11 @@ class StartPomodoro:
         pomodoro_instance = Pomodoro()
         timer = Timer()
 
-        mode = input('Choose mode: [p]omodoro or [f]lowmodoro: ').lower()
+        mode = input('Choose mode: [p]omodoro, [f]lowmodoro or [a]nalyze: ').lower()
+        
+        if mode == 'a':
+            analyze_task_percentages()
+            return
         
         while True:
             task_name = input('Enter the name of the task this session is for: ')
