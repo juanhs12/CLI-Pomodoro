@@ -6,6 +6,7 @@ import sys
 class Timer:
     def run_flowmodoro(self, max_minutes):
         print("Flowmodoro iniciado. Pressione Ctrl+C para pausar.")
+        os.system('tput bel')
         chime.theme('pokemon')
         chime.success()
         
@@ -37,11 +38,13 @@ class Timer:
     def _do_break(self, work_done_seconds):
         break_time = int(work_done_seconds * 0.20)
         print(f"\nIniciando pausa de {break_time // 60}m {break_time % 60}s. (Ctrl+C para cancelar e sair)")
+        os.system('tput bel')
         chime.theme('zelda')
         chime.success()
         try:
             self.countdown(break_time)
             print("\nPausa finalizada.")
+            os.system('tput bel')
             chime.theme('sonic')
             chime.success()
             return True
@@ -52,17 +55,20 @@ class Timer:
     def run_pomodoro(self, cycle_length, work_time, short_break, long_break):
         for i in range(cycle_length):
             print("Work timer started for", work_time, "minutes")
+            os.system('tput bel')
             chime.theme('pokemon')
             chime.success()
             self.countdown(work_time * 60)
 
             if i < cycle_length - 1:
                 print("\nShort break timer started for", short_break, "minutes")
+                os.system('tput bel')
                 chime.theme('zelda')
                 chime.success()
                 self.countdown(short_break * 60)
 
         print("\nLong break timer started for", long_break, "minutes")
+        os.system('tput bel')
         chime.theme('sonic')
         chime.success()
         self.countdown(long_break * 60)
