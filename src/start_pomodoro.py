@@ -69,10 +69,10 @@ class StartPomodoro:
                 }
                 self.tasks.append(task)
             
-            write_to_csv(task_name, pomodoro)
 
             timer.run_pomodoro(cycle_length, work_time, short_break, long_break)
 
+            write_to_csv(task_name, pomodoro)
         except KeyboardInterrupt:
             print("\nInterrupted. Writing current session to file...")
-            write_to_csv(task_name, {'duration': 0, 'task': task_name, 'start_time': 'N/A', 'end_time': 'N/A'})
+           # write_to_csv(task_name, {'duration': 0, 'task': task_name, 'start_time': 'N/A', 'end_time': 'N/A'})
