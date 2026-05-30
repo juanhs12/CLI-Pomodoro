@@ -17,7 +17,7 @@ python3 -m venv venv
 source venv/bin/activate
 
 # Installing dependencies - chime for sounds
-#pip install -r requirements.txt
+pip install -r requirements.txt
 
 # Run application
 python3 src/main.py

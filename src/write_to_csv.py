@@ -1,7 +1,6 @@
 import os
 import csv
 
-
 def write_to_csv(task_name, pomodoro):
     # CSV file headers
     headers = ['Task Name', 'Start Time', 'End Time', 'Duration']
@@ -17,6 +16,5 @@ def write_to_csv(task_name, pomodoro):
         start = pomodoro.get('start_time', 'N/A')
         end = pomodoro.get('end_time', 'N/A')
         duration = pomodoro.get('duration', 0)
-        
         # write Pomodoro data to CSV
         writer.writerow([task_name, start, end, f"{duration} min"])

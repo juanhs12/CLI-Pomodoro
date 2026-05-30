@@ -31,13 +31,16 @@ class StartPomodoro:
             max_mins = int(input("Enter max minutes for this flowmodoro: "))
             start_time = datetime.datetime.now().replace(microsecond=0)
             try:
-                timer.run_flowmodoro(max_mins)
+
+                duration = int(timer.run_flowmodoro(max_mins) // 60)
+
             except SystemExit as e:
                 print(e)
                 return
+
             end_time = datetime.datetime.now().replace(microsecond=0)
             write_to_csv(task_name, {
-                'duration': max_mins, 
+                'duration': duration, 
                 'task': task_name, 
                 'start_time': start_time, 
                 'end_time': end_time
@@ -76,3 +79,4 @@ class StartPomodoro:
         except KeyboardInterrupt:
             print("\nInterrupted. Writing current session to file...")
            # write_to_csv(task_name, {'duration': 0, 'task': task_name, 'start_time': 'N/A', 'end_time': 'N/A'})
+ 

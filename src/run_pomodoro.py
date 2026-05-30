@@ -31,10 +31,12 @@ class Timer:
                     print(f"\r{max_minutes}m\r{GREEN}{current_total // 60}m {current_total % 60}s{RESET}", end="", flush=True)
                     time.sleep(1)
                 
+                os.system('tmux display-popup "echo Tempo-Maximo-Atingido"')
                 print("\nTempo máximo atingido!")
                 total_work_done += work_done_in_block
                 self._do_break(work_done_in_block)
-                
+                return total_work_done 
+
             except KeyboardInterrupt:
                 try:
                     print(f"\nFluxo pausado aos {work_done_in_block // 60}m {work_done_in_block % 60}s.")
@@ -42,14 +44,16 @@ class Timer:
                     if not self._do_break(work_done_in_block):
                         print("\rSalvando\r")
                         time.sleep(2)
-                        return True
-                        #raise SystemExit("\nSaindo sem salva.")
+                        #return True
+                        return total_work_done 
+                        #raise SystemExit("\nSaindo sem salvar.")
                     if total_work_done < total_goal_seconds:
                         print(f"\nRetomando fluxo. Total trabalhado: {total_work_done // 60}m {total_work_done % 60}s / {max_minutes}m.")
 
                 except KeyboardInterrupt: 
-                    return True
-                    #raise SystemExit("\nSaindo sem salva.")
+                    #return True
+                    return total_work_done 
+                    #raise SystemExit("\nSaindo sem salvar.")
 
     def _do_break(self, work_done_seconds):
         break_time = int(work_done_seconds * 0.20)
@@ -64,6 +68,7 @@ class Timer:
         try:
             self.countdown(break_time, mode='break')
             print("\nPausa finalizada.")
+            os.system('tmux display-popup "echo FIM-PAUSA"')
             os.system('tput bel')
             time.sleep(1)
             os.system('tput bel')
@@ -90,6 +95,7 @@ class Timer:
 
             if i < cycle_length - 1:
                 print("\nShort break timer started for", short_break, "minutes")
+                os.system('tmux display-popup "echo BREAK-TIME"')
                 os.system('tput bel')
                 time.sleep(1)
                 os.system('tput bel')
@@ -98,8 +104,10 @@ class Timer:
                 chime.theme('zelda')
                 chime.success()
                 self.countdown(short_break * 60, mode='break')
+                os.system('tmux display-popup "echo Back-to-WORK"')
         if long_break > 0:
             print("\rLong break timer started for", long_break, "minutes")
+            os.system('tmux display-popup "echo Início-Long-Break"')
             os.system('tput bel')
             time.sleep(1)
             os.system('tput bel')
@@ -109,6 +117,7 @@ class Timer:
             chime.success()
             self.countdown(long_break * 60, mode='break') 
             print("\rLong break finish",)
+            os.system('tmux display-popup "echo FIM-CICLO"')
             os.system('tput bel')
             time.sleep(1)
             os.system('tput bel')
@@ -117,6 +126,7 @@ class Timer:
             chime.theme('material')
             chime.success()
         else: 
+            os.system('tmux display-popup "echo FIM-CICLO"')
             os.system('tput bel')
             time.sleep(1)
             os.system('tput bel')
